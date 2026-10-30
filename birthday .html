@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Bestie! 🐼🎉</title>
+  <style>
+    :root {
+      --primary: #ff477e;
+      --accent: #ff0055;
+      --bg: #0f0c20;
+      --card-bg: rgba(255, 255, 255, 0.08);
+      --glass-border: rgba(255, 255, 255, 0.18);
+      --text: #ffffff;
+      --text-sub: #ffccd5;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
+    body { background-color: var(--bg); color: var(--text); height: 100vh; overflow: hidden; display: flex; justify-content: center; align-items: center; }
+
+    #app-container {
+      width: 100%; max-width: 430px; height: 100vh; max-height: 900px;
+      position: relative; background: radial-gradient(circle at top, #2b1055, #0f0c20);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8); overflow: hidden; display: flex; flex-direction: column;
+    }
+
+    /* Sound Bar */
+    .audio-control {
+      position: absolute; top: 15px; right: 15px; z-index: 100;
+      background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border); padding: 8px 12px; border-radius: 20px;
+      display: flex; align-items: center; gap: 8px; font-size: 12px; cursor: pointer;
+    }
+    .audio-control input { display: none; }
+
+    /* Page Slider Container */
+    .pages-wrapper { width: 100%; height: 100%; position: relative; perspective: 1200px; }
+    .page {
+      position: absolute; width: 100%; height: 100%; padding: 25px 20px 60px 20px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+      opacity: 0; pointer-events: none; transform: rotateY(-90deg); transform-origin: left center;
+      transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .page.active { opacity: 1; pointer-events: all; transform: rotateY(0deg); }
+    .page.prev { transform: rotateY(90deg); opacity: 0; }
+
+    /* Buttons & Inputs */
+    .btn {
+      background: linear-gradient(45deg, #ff0055, #ff5050); color: white; border: none;
+      padding: 12px 24px; border-radius: 30px; font-weight: bold; cursor: pointer;
+      box-shadow: 0 4px 15px rgba(255, 0, 85, 0.4); margin-top: 15px; transition: 0.3s;
+    }
+    .btn:active { transform: scale(0.95); }
+
+    /* Animated Panda CSS Graphics */
+    .panda-wrapper { width: 180px; height: 180px; position: relative; margin: 15px auto; }
+    .panda-svg { width: 100%; height: 100%; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); }
+
+    /* Photo Upload Box */
+    .photo-slot {
+      width: 80%; height: 220px; border: 2px dashed rgba(255,255,255,0.4);
+      border-radius: 15px; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; background-size: cover; background-position: center;
+      cursor: pointer; position: relative; overflow: hidden; background-color: rgba(255,255,255,0.05);
+    }
+    .photo-slot input { display: none; }
+    .photo-slot p { font-size: 13px; color: var(--text-sub); }
+
+    /* Custom Text editable area */
+    [contenteditable="true"] { outline: 1px dashed rgba(255,255,255,0.3); padding: 5px; border-radius: 5px; min-width: 100px; }
+    [contenteditable="true"]:focus { outline: 2px solid var(--primary); background: rgba(255,255,255,0.1); }
+
+    /* Popups & Animations */
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+    @keyframes runAround {
+      0% { transform: translateX(-150px) scaleX(1); }
+      50% { transform: translateX(150px) scaleX(1); }
+      51% { transform: translateX(150px) scaleX(-1); }
+      100% { transform: translateX(0px) scaleX(-1); }
+    }
+    .running-panda { animation: runAround 15s linear infinite; }
+    .bouncing { animation: bounce 2s infinite; }
+
+    /* Page Indicators */
+    .nav-bar {
+      position: absolute; bottom: 15px; width: 100%; display: flex;
+      justify-content: space-between; padding: 0 25px; z-index: 50;
+    }
+    .nav-btn { background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 15px; border-radius: 20px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+<div id="app-container">
+  <!-- Audio Control -->
+  <label class="audio-control">
+    🎵 <span>Add Bday Music</span>
+    <input type="file" id="audio-input" accept="audio/*">
+  </label>
+  <audio id="bg-music" loop></audio>
+
+  <div class="pages-wrapper">
+    <!-- PAGE 1: Panda Teasing -->
+    <div class="page active" id="page-1">
+      <h3 style="color: var(--text-sub);">Wait... What day is it? 🤔</h3>
+      <div class="panda-wrapper running-panda">
+        <svg class="panda-svg" viewBox="0 0 200 200">
+          <circle cx="60" cy="50" r="25" fill="#111" />
+          <circle cx="140" cy="50" r="25" fill="#111" />
+          <circle cx="100" cy="100" r="65" fill="#fff" />
+          <ellipse cx="75" cy="90" rx="15" ry="20" fill="#111" />
+          <ellipse cx="125" cy="90" rx="15" ry="20" fill="#111" />
+          <circle cx="78" cy="88" r="5" fill="#fff" />
+          <circle cx="122" cy="88" r="5" fill="#fff" />
+          <ellipse cx="100" cy="110" rx="10" ry="7" fill="#111" />
+        </svg>
+      </div>
+      <p style="margin-top:20px;">Panda running... Trying to remember 31 October!</p>
+      <button class="btn" id="p1-btn" style="display:none;" onclick="nextPage()">Aaj kya khaas hai? 🥳</button>
+    </div>
+
+    <!-- PAGE 2: Computer Panda -->
+    <div class="page" id="page-2">
+      <div class="panda-wrapper bouncing">
+        <svg class="panda-svg" viewBox="0 0 200 200">
+          <circle cx="60" cy="50" r="25" fill="#111" />
+          <circle cx="140" cy="50" r="25" fill="#111" />
+          <circle cx="100" cy="100" r="65" fill="#fff" />
+          <ellipse cx="75" cy="90" rx="15" ry="20" fill="#111" />
+          <ellipse cx="125" cy="90" rx="15" ry="20" fill="#111" />
+          <circle cx="78" cy="88" r="5" fill="#fff" />
+          <circle cx="122" cy="88" r="5" fill="#fff" />
+          <rect x="70" y="130" width="60" height="40" rx="5" fill="#888" />
+        </svg>
+      </div>
+      <p id="p2-text">Working hard on computer... 💻</p>
+      <button class="btn" id="p2-btn" style="display:none;" onclick="triggerFlash()">YES! 🎉</button>
+    </div>
+
+    <!-- PAGE 3: Photo & Funny Compliment -->
+    <div class="page" id="page-3">
+      <h2>Happy Birthday!! 🎈</h2>
+      <div class="photo-slot" onclick="this.querySelector('input').click()">
+        <input type="file" accept="image/*" onchange="loadImg(event, this.parentElement)">
+        <p>📷 Click to Upload B'day Girl Photo</p>
+      </div>
+      <p id="p3-tag" style="margin-top:15px; opacity:0; color: #ff85a2; font-weight:bold;">
+        Cute to lag rhi ho vromu tum iss photo me 😘😍
+      </p>
+    </div>
+
+    <!-- PAGE 4: Cake & Candle Blow -->
+    <div class="page" id="page-4">
+      <div class="panda-wrapper">
+        🎂
+      </div>
+      <h2>Make a Wish! 🕯️</h2>
+      <button class="btn" onclick="blowCandle()">Blow the Candle 🌬️</button>
+      <div id="cake-wish-text" contenteditable="true" style="margin-top:20px; width:100%;">
+        Write your special lines here for her... ✍️
+      </div>
+    </div>
+
+    <!-- PAGE 5: 2 Masti Photos -->
+    <div class="page" id="page-5">
+      <h3>Crazy Memories 👯‍♀️</h3>
+      <div style="display:flex; gap:10px; width:100%; margin-top:15px;">
+        <div class="photo-slot" style="height:150px;" onclick="this.querySelector('input').click()">
+          <input type="file" accept="image/*" onchange="loadImg(event, this.parentElement)">
+          <p>Photo 1</p>
+        </div>
+        <div class="photo-slot" style="height:150px;" onclick="this.querySelector('input').click()">
+          <input type="file" accept="image/*" onchange="loadImg(event, this.parentElement)">
+          <p>Photo 2</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 6: Video Upload -->
+    <div class="page" id="page-6">
+      <h3>Special Video Clip 🎥</h3>
+      <div class="photo-slot" style="height:250px; width:100%;" onclick="this.querySelector('input').click()">
+        <input type="file" accept="video/*" onchange="loadVideo(event, this.parentElement)">
+        <p>📹 Upload Video Here</p>
+      </div>
+    </div>
+
+    <!-- PAGE 7: Scooty Panda & Letter -->
+    <div class="page" id="page-7">
+      <div class="panda-wrapper">🛵 🐼</div>
+      <h3>Panda brought a letter! ✉️</h3>
+      <div style="background: rgba(255,255,255,0.1); padding:15px; border-radius:10px; margin-top:10px; width:100%;" contenteditable="true">
+        Dear Bestie, write your heartfelt feelings here... ❤️
+      </div>
+    </div>
+
+    <!-- PAGE 8: 3 Photo Collage -->
+    <div class="page" id="page-8">
+      <h3>More Memories 🖼️</h3>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; width:100%;">
+        <div class="photo-slot" style="height:120px;" onclick="this.querySelector('input').click()">
+          <input type="file" accept="image/*" onchange="loadImg(event, this.parentElement)"><p>Img 1</p>
+        </div>
+        <div class="photo-slot" style="height:120px;" onclick="this.querySelector('input').click()">
+          <input type="file" accept="image/*" onchange="loadImg(event, this.parentElement)"><p>Img 2</p>
+        </div>
+        <div class="photo-slot" style="height:120px; grid-column: span 2;" onclick="this.querySelector('input').click()">
+          <input type="file" accept="image/*" onchange="loadImg(event, this.parentElement)"><p>Img 3</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 9: Grand Finale -->
+    <div class="page" id="page-9">
+      <h1>HAPPY BIRTHDAY! 🥳🎉</h1>
+      <p>Panda holding banner... 🐼🚩</p>
+      <button class="btn" onclick="finishStory()">Ek aur cheez dekhna chahegi? 😜</button>
+    </div>
+
+    <!-- PAGE 10: Secret Final Funny Photo -->
+    <div class="page" id="page-10">
+      <h3>Secret Surprise 🤣</h3>
+      <div class="photo-slot" style="height:250px; width:100%;" onclick="this.querySelector('input').click()">
+        <input type="file" accept="image/*" onchange="loadImg(event, this.parentElement)">
+        <p>Upload Final Secret Funny Photo</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Nav -->
+  <div class="nav-bar">
+    <button class="nav-btn" onclick="prevPage()">◀ Prev</button>
+    <button class="nav-btn" onclick="nextPage()">Next ▶</button>
+  </div>
+</div>
+
+<script>
+  let currentPage = 1;
+  const totalPages = 10;
+
+  // Page 1 Timer (20s)
+  setTimeout(() => {
+    document.getElementById('p1-btn').style.display = 'inline-block';
+  }, 5000); // reduced slightly for demo, set to 20000 for 20s
+
+  // Page 2 Timer (15s)
+  function setupPage2() {
+    setTimeout(() => {
+      document.getElementById('p2-text').innerText = "Aaj kuch aur bhi khaas hai kya? 🥺";
+      document.getElementById('p2-btn').style.display = 'inline-block';
+    }, 4000);
+  }
+
+  function nextPage() {
+    if (currentPage < totalPages) {
+      document.getElementById(`page-${currentPage}`).classList.remove('active');
+      document.getElementById(`page-${currentPage}`).classList.add('prev');
+      currentPage++;
+      document.getElementById(`page-${currentPage}`).classList.add('active');
+      if (currentPage === 2) setupPage2();
+      if (currentPage === 3) {
+        setTimeout(() => { document.getElementById('p3-tag').style.opacity = '1'; }, 3000);
+      }
+    }
+  }
+
+  function prevPage() {
+    if (currentPage > 1) {
+      document.getElementById(`page-${currentPage}`).classList.remove('active');
+      currentPage--;
+      document.getElementById(`page-${currentPage}`).classList.remove('prev');
+      document.getElementById(`page-${currentPage}`).classList.add('active');
+    }
+  }
+
+  function triggerFlash() {
+    alert("🎉 FLASH POP! HAPPY BIRTHDAY! 🎉");
+    nextPage();
+  }
+
+  function blowCandle() {
+    alert("🕯️ Candle blown! Wishes coming true ✨");
+  }
+
+  function finishStory() {
+    nextPage();
+  }
+
+  // Audio Handler
+  document.getElementById('audio-input').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+      const audio = document.getElementById('bg-music');
+      audio.src = URL.createObjectURL(file);
+      audio.play();
+    }
+  });
+
+  // Photo Uploader Helper
+  function loadImg(event, element) {
+    const file = event.target.files[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      element.style.backgroundImage = `url(${url})`;
+      element.querySelector('p').style.display = 'none';
+    }
+  }
+
+  // Video Uploader Helper
+  function loadVideo(event, element) {
+    const file = event.target.files[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      element.innerHTML = `<video src="${url}" controls style="width:100%; height:100%; border-radius:10px;"></video>`;
+    }
+  }
+</script>
+</body>
+</html>
